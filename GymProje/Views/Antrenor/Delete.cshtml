@@ -1,0 +1,32 @@
+﻿@model GymProje.Models.Antrenor
+
+@{
+    ViewData["Title"] = "Antrenörü Sil";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">Silme Onayı</h4>
+            </div>
+            <div class="card-body text-center">
+
+                @if (!string.IsNullOrEmpty(Model.ResimYolu))
+                {
+                    <img src="@Model.ResimYolu" class="rounded-circle mb-3 border border-3 border-danger" width="120" height="120" style="object-fit:cover" />
+                }
+
+                <h5 class="card-title mb-3">@Model.AdSoyad isimli antrenörü silmek istediğinize emin misiniz?</h5>
+
+                <p class="text-muted">Bu işlem geri alınamaz ve antrenöre ait randevular da silinebilir.</p>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <button type="submit" class="btn btn-danger btn-lg px-5">Evet, Sil</button>
+                    <a asp-action="Index" class="btn btn-secondary btn-lg px-3">Vazgeç</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

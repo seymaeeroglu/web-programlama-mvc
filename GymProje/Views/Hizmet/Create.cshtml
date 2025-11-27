@@ -1,0 +1,41 @@
+﻿@model GymProje.Models.Hizmet
+
+@{
+    ViewData["Title"] = "Hizmet Ekle";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-5">
+        <div class="card shadow">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Yeni Hizmet Tanımla</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" method="post">
+
+                    <div class="mb-3">
+                        <label asp-for="UzmanlikId" class="form-label">Branş Seçiniz</label>
+                        <select asp-for="UzmanlikId" class="form-control" asp-items="ViewBag.UzmanlikId"></select>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SureDk" class="form-label">Süre (Dakika)</label>
+                        <input asp-for="SureDk" type="number" class="form-control" placeholder="60" />
+                        <span asp-validation-for="SureDk" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Ucret" class="form-label">Ücret (TL)</label>
+                        <input asp-for="Ucret" type="number" class="form-control" placeholder="500" />
+                        <span asp-validation-for="Ucret" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-info text-white">Kaydet</button>
+                        <a asp-action="Index" class="btn btn-secondary mt-2">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

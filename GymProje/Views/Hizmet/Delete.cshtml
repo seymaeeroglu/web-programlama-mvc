@@ -1,0 +1,49 @@
+﻿@model GymProje.Models.Hizmet
+
+@{
+    ViewData["Title"] = "Hizmeti Sil";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-trash3-fill"></i> Silme Onayı</h4>
+            </div>
+            <div class="card-body text-center">
+                <h5 class="card-title mb-4">Bu hizmet paketini silmek istediğinize emin misiniz?</h5>
+
+                <div class="alert alert-light border">
+                    <dl class="row mb-0">
+                        <dt class="col-sm-5 text-end">Branş:</dt>
+                        <dd class="col-sm-7 text-start fw-bold">
+                            @if (Model.Uzmanlik != null)
+                            {
+                                @Model.Uzmanlik.Ad
+                            }
+                            else
+                            {
+                                <span class="text-muted">Belirtilmemiş</span>
+                            }
+                        </dd>
+
+                        <dt class="col-sm-5 text-end">Süre:</dt>
+                        <dd class="col-sm-7 text-start">@Model.SureDk Dakika</dd>
+
+                        <dt class="col-sm-5 text-end">Ücret:</dt>
+                        <dd class="col-sm-7 text-start">@Model.Ucret.ToString("C2")</dd>
+                    </dl>
+                </div>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="d-flex justify-content-center gap-2 mt-4">
+                        <button type="submit" class="btn btn-danger btn-lg px-4">Evet, Sil</button>
+                        <a asp-action="Index" class="btn btn-secondary btn-lg px-4">Vazgeç</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,110 @@
+﻿@model IEnumerable<GymProje.Models.Randevu>
+
+@{
+    ViewData["Title"] = "Randevular";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4">
+        @if (User.IsInRole("Admin"))
+        {
+            <span><i class="bi bi-shield-lock-fill"></i> Tüm Randevular (Yönetim)</span>
+        }
+        else
+        {
+            <span><i class="bi bi-calendar-event"></i> Randevularım</span>
+        }
+    </h2>
+
+    <div class="card shadow-sm">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Tarih / Saat</th>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th>Üye Bilgisi</th>
+                        }
+
+                        <th>Eğitmen</th>
+                        <th>Hizmet</th>
+                        <th>Durum</th>
+
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <th>Yönetim</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="fw-bold">@item.Tarih.ToString("dd.MM.yyyy")</div>
+                                <div class="small text-muted">@item.Saat</div>
+                            </td>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td>
+                                    <i class="bi bi-person"></i> @item.Kullanici?.UserName
+                                </td>
+                            }
+
+                            <td>@item.Antrenor?.AdSoyad</td>
+
+                            <td>
+                                @item.Hizmet?.Uzmanlik?.Ad
+                                <span class="badge bg-light text-dark border">@item.Hizmet?.SureDk dk</span>
+                            </td>
+
+                            <td>
+                                @if (item.Durum == "Bekliyor")
+                                {
+                                    <span class="badge bg-warning text-dark">Onay Bekliyor</span>
+                                }
+                                else if (item.Durum == "Onaylandı")
+                                {
+                                    <span class="badge bg-success">Onaylandı</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-danger">İptal Edildi</span>
+                                }
+                            </td>
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <td>
+                                    @if (item.Durum == "Bekliyor")
+                                    {
+                                        <div class="btn-group" role="group">
+                                            <form asp-action="DurumDegistir" method="post">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="yeniDurum" value="Onaylandı" />
+                                                <button type="submit" class="btn btn-sm btn-success" title="Onayla">
+                                                    <i class="bi bi-check-lg"></i>
+                                                </button>
+                                            </form>
+
+                                            <form asp-action="DurumDegistir" method="post" class="ms-1">
+                                                <input type="hidden" name="id" value="@item.Id" />
+                                                <input type="hidden" name="yeniDurum" value="İptal Edildi" />
+                                                <button type="submit" class="btn btn-sm btn-danger" title="İptal Et">
+                                                    <i class="bi bi-x-lg"></i>
+                                                </button>
+                                            </form>
+                                        </div>
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

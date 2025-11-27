@@ -1,0 +1,50 @@
+﻿@model GymProje.Models.Uzmanlik
+
+@{
+    ViewData["Title"] = "Sil";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-6">
+        <div class="card border-danger shadow">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0"><i class="bi bi-trash3-fill"></i> Silme Onayı</h4>
+            </div>
+            <div class="card-body">
+
+                @if (ViewBag.HataMesaji != null)
+                {
+                    <div class="alert alert-warning text-center fw-bold">
+                        <i class="bi bi-exclamation-triangle-fill"></i> @ViewBag.HataMesaji
+                    </div>
+                }
+                else
+                {
+                    <h5 class="card-title text-center mb-4">Bu branşı silmek istediğinize emin misiniz?</h5>
+                }
+
+                <dl class="row justify-content-center mt-3">
+                    <dt class="col-sm-4 text-end">Branş Adı:</dt>
+                    <dd class="col-sm-8 fw-bold">@Model.Ad</dd>
+                </dl>
+
+                <form asp-action="Delete" class="text-center mt-4">
+                    <input type="hidden" asp-for="Id" />
+
+                    @if (ViewBag.HataMesaji == null)
+                    {
+                        <button type="submit" class="btn btn-danger btn-lg px-4">Evet, Sil</button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-secondary btn-lg px-4" disabled>
+                            <i class="bi bi-slash-circle"></i> Silinemez
+                        </button>
+                    }
+
+                    <a asp-action="Index" class="btn btn-outline-secondary btn-lg px-4 ms-2">Vazgeç</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

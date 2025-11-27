@@ -1,0 +1,60 @@
+﻿@model GymProje.Models.Antrenor
+
+@{
+    ViewData["Title"] = "Antrenör Ekle";
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Yeni Antrenör Ekle</h4>
+            </div>
+            <div class="card-body">
+                <form asp-action="Create" enctype="multipart/form-data">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label asp-for="AdSoyad" class="form-label">Ad Soyad</label>
+                                <input asp-for="AdSoyad" class="form-control" />
+                                <span asp-validation-for="AdSoyad" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UzmanlikId" class="form-label">Uzmanlık Alanı</label>
+                                <select asp-for="UzmanlikId" class="form-control" asp-items="ViewBag.UzmanlikId"></select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Profil Fotoğrafı</label>
+                                <input type="file" name="resimDosyasi" class="form-control" accept=".jpg,.jpeg,.png" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="alert alert-info">
+                                <small>Randevu sistemi için çalışma saatlerini 24 saatlik formatta (Örn: 9 ve 17) giriniz.</small>
+                            </div>
+                            <div class="mb-3">
+                                <label asp-for="CalismaBaslangicSaati" class="form-label">Başlangıç Saati</label>
+                                <input asp-for="CalismaBaslangicSaati" type="number" min="0" max="23" class="form-control" />
+                                <span asp-validation-for="CalismaBaslangicSaati" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="CalismaBitisSaati" class="form-label">Bitiş Saati</label>
+                                <input asp-for="CalismaBitisSaati" type="number" min="0" max="23" class="form-control" />
+                                <span asp-validation-for="CalismaBitisSaati" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-3">
+                        <button type="submit" class="btn btn-primary btn-lg">Kaydet</button>
+                        <a asp-action="Index" class="btn btn-secondary">İptal</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

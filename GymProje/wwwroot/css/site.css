@@ -1,0 +1,93 @@
+/* MODERN GYM TEMASI */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary-color: #2c3e50; /* Koyu Lacivert */
+    --accent-color: #e74c3c; /* Enerjik Kýrmýzý (Spor temasý için) */
+    --light-bg: #f8f9fa;
+}
+
+html {
+    font-size: 14px;
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+body {
+    font-family: 'Poppins', sans-serif; /* Modern Font */
+    background-color: var(--light-bg);
+    color: #333;
+    margin-bottom: 60px;
+}
+
+/* KART TASARIMLARI */
+.card {
+    border: none;
+    border-radius: 15px; /* Yuvarlak köþeler */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Hafif gölge */
+    transition: transform 0.2s;
+}
+
+    .card:hover {
+        transform: translateY(-5px); /* Üzerine gelince hafif yukarý kalkar */
+    }
+
+.card-header {
+    border-radius: 15px 15px 0 0 !important;
+    font-weight: 600;
+}
+
+/* BUTONLAR */
+.btn {
+    border-radius: 50px; /* Hap þeklinde butonlar */
+    padding: 8px 20px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+    .btn-primary:hover {
+        background-color: #1a252f;
+        transform: scale(1.05);
+    }
+
+.btn-danger {
+    background-color: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+/* TABLOLAR */
+.table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+    .table thead {
+        background-color: var(--primary-color);
+        color: white;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* INPUTLAR */
+.form-control, .form-select {
+    border-radius: 10px;
+    padding: 10px 15px;
+    border: 1px solid #ced4da;
+}
+
+    .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
+        border-color: var(--primary-color);
+    }
