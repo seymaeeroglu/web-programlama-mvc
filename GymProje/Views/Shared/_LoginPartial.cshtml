@@ -7,19 +7,32 @@
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        // KULLANICI GİRİŞ YAPMIŞSA BURASI GÖRÜNÜR
+        // --- GİRİŞ YAPILMIŞSA ---
         <li class="nav-item">
-            <a class="nav-link text-dark" href="#">Merhaba, @User.Identity?.Name!</a>
+            <a class="nav-link text-white fw-bold" href="#">
+                <i class="bi bi-person-circle"></i> @User.Identity?.Name
+            </a>
         </li>
         <li class="nav-item">
-            <a class="nav-link btn btn-link text-dark" asp-controller="Account" asp-action="Logout">Çıkış Yap</a>
+            <a class="nav-link btn btn-link text-light" asp-controller="Account" asp-action="Logout">
+                <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+            </a>
         </li>
     }
     else
     {
-        // GİRİŞ YAPILMAMIŞSA BURASI GÖRÜNÜR
+        // --- GİRİŞ YAPILMAMIŞSA (MİSAFİR) ---
+
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+            <a class="nav-link text-warning fw-bold me-2" asp-controller="Account" asp-action="Register">
+                <i class="bi bi-person-plus"></i> Kayıt Ol
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link text-white fw-bold" asp-controller="Account" asp-action="Login">
+                <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
+            </a>
         </li>
     }
 </ul>

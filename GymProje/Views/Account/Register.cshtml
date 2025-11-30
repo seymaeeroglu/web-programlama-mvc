@@ -1,0 +1,58 @@
+﻿@model GymProje.Models.ViewModels.RegisterViewModel
+
+@{
+    ViewData["Title"] = "Kayıt Ol";
+}
+
+<div class="row justify-content-center mt-5">
+    <div class="col-md-5">
+        <div class="card shadow-lg">
+            <div class="card-header bg-success text-white text-center">
+                <h3><i class="bi bi-person-plus-fill"></i> Aramıza Katıl</h3>
+            </div>
+            <div class="card-body p-4">
+                <form asp-action="Register">
+                    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label asp-for="Ad" class="form-label"></label>
+                            <input asp-for="Ad" class="form-control" placeholder="Adınız" />
+                            <span asp-validation-for="Ad" class="text-danger"></span>
+                        </div>
+                        <div class="col">
+                            <label asp-for="Soyad" class="form-label"></label>
+                            <input asp-for="Soyad" class="form-control" placeholder="Soyadınız" />
+                            <span asp-validation-for="Soyad" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Email" class="form-label"></label>
+                        <input asp-for="Email" class="form-control" placeholder="ornek@email.com" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Sifre" class="form-label"></label>
+                        <input asp-for="Sifre" class="form-control" placeholder="******" />
+                        <span asp-validation-for="Sifre" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="SifreTekrar" class="form-label"></label>
+                        <input asp-for="SifreTekrar" class="form-control" placeholder="******" />
+                        <span asp-validation-for="SifreTekrar" class="text-danger"></span>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-success btn-lg">Kayıt Ol</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Zaten üye misiniz? <a asp-action="Login" class="text-primary fw-bold">Giriş Yapın</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

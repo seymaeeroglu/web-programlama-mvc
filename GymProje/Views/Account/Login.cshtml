@@ -6,35 +6,42 @@
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-4">
-        <div class="card shadow">
-            <div class="card-header bg-primary text-white text-center">
-                <h3>Giriş Yap</h3>
+        <div class="card shadow-lg border-0 rounded-3">
+            <div class="card-header bg-primary text-white text-center py-3">
+                <h3 class="fw-bold mb-0">Giriş Yap</h3>
             </div>
-            <div class="card-body">
+            <div class="card-body p-4">
                 <form asp-action="Login" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    <div class="mb-3">
-                        <label asp-for="Email" class="form-label"></label>
-                        <input asp-for="Email" class="form-control" placeholder="E-posta adresiniz" />
+                    <div class="form-floating mb-3">
+                        <input asp-for="Email" class="form-control" placeholder="name@example.com" />
+                        <label asp-for="Email">E-Posta Adresi</label>
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Sifre" class="form-label"></label>
-                        <input asp-for="Sifre" class="form-control" placeholder="Şifreniz" />
+                    <div class="form-floating mb-3">
+                        <input asp-for="Sifre" type="password" class="form-control" placeholder="Şifre" />
+                        <label asp-for="Sifre">Şifre</label>
                         <span asp-validation-for="Sifre" class="text-danger"></span>
                     </div>
 
-                    <div class="mb-3 form-check">
+                    <div class="form-check mb-3">
                         <input class="form-check-input" asp-for="BeniHatirla" />
                         <label class="form-check-label" asp-for="BeniHatirla">Beni Hatırla</label>
                     </div>
 
                     <div class="d-grid">
-                        <button type="submit" class="btn btn-primary">Giriş Yap</button>
+                        <button type="submit" class="btn btn-primary btn-lg rounded-pill">Giriş Yap</button>
                     </div>
                 </form>
+
+                <div class="text-center mt-4 pt-3 border-top">
+                    <p class="text-muted small">Henüz hesabınız yok mu?</p>
+                    <a asp-action="Register" class="btn btn-outline-success btn-sm w-100 rounded-pill">
+                        <i class="bi bi-person-plus-fill"></i> Yeni Hesap Oluştur
+                    </a>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,130 @@
+﻿@model GymProje.Models.Randevu
+
+@{
+    ViewData["Title"] = "Randevu Al";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-primary text-white text-center py-3">
+                    <h4 class="mb-0"><i class="bi bi-calendar-check-fill"></i> Randevu Oluştur</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="Tarih" class="form-label fw-bold">Tarih Seçiniz</label>
+                            <input asp-for="Tarih" type="date" class="form-control"
+                                   min="@DateTime.Now.ToString("yyyy-MM-dd")"
+                                   value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                            <span asp-validation-for="Tarih" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Saat" class="form-label fw-bold">Saat Seçiniz</label>
+                            <select asp-for="Saat" class="form-select">
+                                <option value="">-- Saat Seçin --</option>
+                                <option value="09:00">09:00</option>
+                                <option value="10:00">10:00</option>
+                                <option value="11:00">11:00</option>
+                                <option value="12:00">12:00</option>
+                                <option value="13:00">13:00</option>
+                                <option value="14:00">14:00</option>
+                                <option value="15:00">15:00</option>
+                                <option value="16:00">16:00</option>
+                                <option value="17:00">17:00</option>
+                                <option value="18:00">18:00</option>
+                                <option value="19:00">19:00</option>
+                                <option value="20:00">20:00</option>
+                            </select>
+                            <span asp-validation-for="Saat" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="AntrenorId" class="form-label fw-bold">Eğitmen Seçiniz</label>
+                            <select asp-for="AntrenorId" class="form-select" asp-items="ViewBag.AntrenorId">
+                                <option value="">-- Eğitmen Seçin --</option>
+                            </select>
+                            <span asp-validation-for="AntrenorId" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="HizmetId" class="form-label fw-bold">Ders / Paket Seçiniz</label>
+                            <select asp-for="HizmetId" class="form-select" id="HizmetId">
+                                <option value="">-- Önce Eğitmen Seçin --</option>
+                            </select>
+                            <span asp-validation-for="HizmetId" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill">Randevuyu Onayla</button>
+                            <a asp-controller="Home" asp-action="Hizmetler" class="btn btn-outline-secondary rounded-pill">Vazgeç</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            // Eğer sayfa açıldığında hoca zaten seçiliyse (Hata alıp geri dönüldüyse)
+            // Dersleri tekrar yüklemesi için tetikleyelim
+            var baslangicAntrenor = $("#AntrenorId").val();
+            if(baslangicAntrenor) {
+                 DersleriGetir(baslangicAntrenor);
+            }
+
+            // "Eğitmen" kutusu değiştiğinde çalışır
+            $("#AntrenorId").change(function () {
+                var secilenAntrenorId = $(this).val();
+                DersleriGetir(secilenAntrenorId);
+            });
+
+            function DersleriGetir(antrenorId) {
+                var hizmetKutusu = $("#HizmetId");
+
+                // Ders kutusunu temizle ve "Yükleniyor..." yaz
+                hizmetKutusu.empty();
+                hizmetKutusu.append('<option value="">-- Dersler Yükleniyor --</option>');
+
+                if (antrenorId) {
+                    // Controller'daki metoda git ve verileri al
+                    $.ajax({
+                        url: '/Randevu/GetHizmetlerByAntrenor',
+                        type: 'GET',
+                        data: { antrenorId: antrenorId },
+                        success: function (data) {
+                            // "Yükleniyor" yazısını kaldır
+                            hizmetKutusu.empty();
+                            hizmetKutusu.append('<option value="">-- Ders Seçiniz --</option>');
+
+                            // Gelen dersleri kutuya ekle
+                            $.each(data, function (index, item) {
+                                hizmetKutusu.append('<option value="' + item.id + '">' + item.metin + '</option>');
+                            });
+                        },
+                        error: function() {
+                            hizmetKutusu.empty();
+                            hizmetKutusu.append('<option value="">-- Ders Bulunamadı --</option>');
+                        }
+                    });
+                } else {
+                    // Eğer hoca seçimi kaldırılırsa dersleri de sıfırla
+                    hizmetKutusu.empty();
+                    hizmetKutusu.append('<option value="">-- Önce Eğitmen Seçin --</option>');
+                }
+            }
+        });
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

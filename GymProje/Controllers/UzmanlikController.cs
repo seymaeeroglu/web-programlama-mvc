@@ -3,8 +3,6 @@ using GymProje.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using GymProje.Data;   // Kendi proje adınızı yazın
-using GymProje.Models; // Kendi proje adınızı yazın
 
 namespace ProjeIsmi.Controllers
 {

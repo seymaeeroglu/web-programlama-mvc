@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using GymProje.Models; // Kendi proje isminizi yazın
+using GymProje.Models; 
 
-namespace GymProje.Data // Kendi proje isminizi yazın
+namespace GymProje.Data 
 {
     public static class VeriBaslatici
     {
@@ -21,9 +21,6 @@ namespace GymProje.Data // Kendi proje isminizi yazın
                 }
             }
 
-            // 2. Admin Kullanıcısını Oluştur
-            // Belgedeki Format: ogrencinumarasi@sakarya.edu.tr
-            // LÜTFEN AŞAĞIDAKİ E-POSTAYI KENDİ NUMARANIZLA GÜNCELLEYİN
             string adminEmail = "G231210062@sakarya.edu.tr";
 
             var adminKullanici = await userManager.FindByEmailAsync(adminEmail);
@@ -39,12 +36,10 @@ namespace GymProje.Data // Kendi proje isminizi yazın
                     EmailConfirmed = true
                 };
 
-                // Şifre: sau (Belgede istenen şifre)
                 var sonuc = await userManager.CreateAsync(yeniAdmin, "sau");
 
                 if (sonuc.Succeeded)
                 {
-                    // Kullanıcıya Admin rolünü ata
                     await userManager.AddToRoleAsync(yeniAdmin, "Admin");
                 }
             }

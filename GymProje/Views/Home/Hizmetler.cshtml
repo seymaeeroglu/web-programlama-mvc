@@ -1,0 +1,50 @@
+﻿@model IEnumerable<GymProje.Models.Hizmet>
+
+@{
+    ViewData["Title"] = "Program ve Paketler";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-uppercase">Hizmetlerimiz</h1>
+        <p class="text-muted">Size en uygun programı seçin.</p>
+    </div>
+
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var item in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 shadow border-0">
+                        <div class="card-header bg-dark text-white text-center py-3">
+                            <h4 class="my-0">@item.Uzmanlik?.Ad</h4>
+                        </div>
+                        <div class="card-body text-center d-flex flex-column">
+                            <h2 class="text-primary my-3">
+                                @item.Ucret.ToString("C0")
+                            </h2>
+                            <ul class="list-unstyled mb-4 flex-grow-1">
+                                <li><i class="bi bi-clock"></i> @item.SureDk Dakika</li>
+                                <li><i class="bi bi-check-circle"></i> Profesyonel Eğitmen</li>
+                            </ul>
+
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                <a asp-controller="Randevu" asp-action="Create" asp-route-hizmetId="@item.Id" class="btn btn-primary w-100 rounded-pill">Randevu Al</a>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" class="btn btn-outline-dark w-100 rounded-pill">Giriş Yap</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="alert alert-warning text-center">Henüz hizmet eklenmemiştir.</div>
+        }
+    </div>
+</div>

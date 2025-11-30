@@ -1,16 +1,22 @@
 using System.Diagnostics;
-using GymProje.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore; // Include ve ToListAsync için gerekli
+using GymProje.Models;
+using GymProje.Data;
 
 namespace GymProje.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        // 1. Veritabaný Baðlantýsý için deðiþken tanýmlýyoruz
+        private readonly ApplicationDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        // 2. Constructor (Yapýcý Metot) içine context'i ekliyoruz
+        public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
+            _context = context; // Veritabaný baðlantýsýný aldýk
         }
 
         public IActionResult Index()
@@ -22,6 +28,16 @@ namespace GymProje.Controllers
         {
             return View();
         }
+
+        // --- YENÝ EKLENEN METOD: HÝZMETLERÝ LÝSTELE ---
+        // Kullanýcý menüden "Hizmetler"e týkladýðýnda burasý çalýþacak
+        public async Task<IActionResult> Hizmetler()
+        {
+            // Hizmetleri, baðlý olduðu branþ (Uzmanlik) bilgisiyle beraber getir
+            var hizmetler = await _context.Hizmetler.Include(h => h.Uzmanlik).ToListAsync();
+            return View(hizmetler);
+        }
+        // ---------------------------------------------
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

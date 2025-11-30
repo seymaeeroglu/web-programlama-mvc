@@ -7,12 +7,15 @@ namespace GymProje.Controllers
 {
     public class AccountController : Controller
     {
+        // Hem SignInManager hem de UserManager'ı tanımlıyoruz
         private readonly SignInManager<Kullanici> _signInManager;
+        private readonly UserManager<Kullanici> _userManager;
 
-        // Dependency Injection ile SignInManager'ı alıyoruz
-        public AccountController(SignInManager<Kullanici> signInManager)
+        // Constructor'da (Yapıcı Metot) ikisini de "Dependency Injection" ile alıyoruz
+        public AccountController(SignInManager<Kullanici> signInManager, UserManager<Kullanici> userManager)
         {
             _signInManager = signInManager;
+            _userManager = userManager;
         }
 
         // GET: /Account/Login (Sayfayı Göster)
@@ -30,18 +33,58 @@ namespace GymProje.Controllers
                 return View(model);
             }
 
-            // Giriş yapmayı dene (Kullanıcı adı olarak Email kullanıyoruz)
-            // false: hesabı kilitleme, true: lockout (kilitlenme) aktif
+            // Giriş yapmayı dene
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Sifre, model.BeniHatirla, false);
 
             if (result.Succeeded)
             {
-                // Başarılıysa Anasayfaya git
                 return RedirectToAction("Index", "Home");
             }
 
-            // Başarısızsa hata mesajı ekle
             ModelState.AddModelError("", "Geçersiz giriş denemesi (E-posta veya şifre hatalı).");
+            return View(model);
+        }
+
+        // --- KAYIT OL (REGISTER) ---
+
+        // 1. Sayfayı Getir
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        // 2. Kayıt İşlemini Yap
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new Kullanici
+                {
+                    UserName = model.Email, // Kullanıcı adı olarak e-posta kullanıyoruz
+                    Email = model.Email,
+                    Ad = model.Ad,
+                    Soyad = model.Soyad
+                };
+
+                // Kullanıcıyı oluştur (Artık _userManager tanımlı olduğu için hata vermez)
+                var result = await _userManager.CreateAsync(user, model.Sifre);
+
+                if (result.Succeeded)
+                {
+                    // Otomatik olarak "Uye" rolü ver
+                    await _userManager.AddToRoleAsync(user, "Uye");
+
+                    // Kayıttan sonra Login sayfasına yönlendir
+                    return RedirectToAction("Login");
+                }
+
+                // Hata varsa ekrana bas
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+            }
             return View(model);
         }
 
