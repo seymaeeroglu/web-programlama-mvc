@@ -37,7 +37,16 @@ namespace GymProje.Controllers
             var hizmetler = await _context.Hizmetler.Include(h => h.Uzmanlik).ToListAsync();
             return View(hizmetler);
         }
-        // ---------------------------------------------
+
+        // --- YENÝ: EÐÝTMENLER VÝTRÝNÝ ---
+        public async Task<IActionResult> Egitmenler()
+        {
+            // Antrenörleri ve Uzmanlýk alanlarýný getir
+            var egitmenler = await _context.Antrenorler
+                                           .Include(a => a.Uzmanlik)
+                                           .ToListAsync();
+            return View(egitmenler);
+        }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

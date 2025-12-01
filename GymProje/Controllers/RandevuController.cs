@@ -32,6 +32,7 @@ namespace GymProje.Controllers
                 .ThenInclude(h => h.Uzmanlik) // Hizmetin branşını da görelim
                 .AsQueryable();
 
+            // user değişkeninin boş olmadığını garanti ediyoruz
             if (user != null && !User.IsInRole("Admin"))
             {
                 randevular = randevular.Where(r => r.KullaniciId == user.Id);
@@ -42,21 +43,20 @@ namespace GymProje.Controllers
 
         // 2. RANDEVU ALMA SAYFASI (GET)
         [HttpGet]
-        public IActionResult Create(int? hizmetId)
+        public IActionResult Create(int? hizmetId, int? antrenorId)
         {
-            // Antrenör yoksa hata vermesin
+            // Veri kontrolü
             if (!_context.Antrenorler.Any())
             {
                 ViewBag.Hata = "Sistemde kayıtlı antrenör bulunamadı.";
-                ViewData["AntrenorId"] = new SelectList(new List<string>());
-                ViewData["HizmetId"] = new SelectList(new List<string>());
                 return View();
             }
 
-            // Antrenörleri doldur
-            ViewData["AntrenorId"] = new SelectList(_context.Antrenorler, "Id", "AdSoyad");
+            // 1. ANTRENÖRÜ SEÇİLİ GETİRMEK İÇİN
+            // Eğer URL'den antrenorId geldiyse (Eğitmenler sayfasından) onu seçili yap
+            ViewData["AntrenorId"] = new SelectList(_context.Antrenorler, "Id", "AdSoyad", antrenorId);
 
-            // Hizmetleri özel formatla doldur (Ad sütunu silindiği için burası önemli)
+            // 2. HİZMETİ SEÇİLİ GETİRMEK İÇİN
             var hizmetListesi = _context.Hizmetler
                 .Include(h => h.Uzmanlik)
                 .Select(h => new
@@ -77,6 +77,7 @@ namespace GymProje.Controllers
         public async Task<IActionResult> Create(Randevu randevu)
         {
             var user = await _userManager.GetUserAsync(User);
+            if (user == null) return RedirectToAction("Login", "Account");
             randevu.KullaniciId = user.Id;
 
             // Validasyon temizliği

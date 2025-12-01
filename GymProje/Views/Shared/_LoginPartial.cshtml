@@ -4,35 +4,33 @@
 @inject SignInManager<Kullanici> SignInManager
 @inject UserManager<Kullanici> UserManager
 
-<ul class="navbar-nav">
+<ul class="navbar-nav ms-auto flex-row align-items-center gap-3">
+
     @if (SignInManager.IsSignedIn(User))
     {
-        // --- GİRİŞ YAPILMIŞSA ---
-        <li class="nav-item">
-            <a class="nav-link text-white fw-bold" href="#">
-                <i class="bi bi-person-circle"></i> @User.Identity?.Name
-            </a>
+        <li class="nav-item d-flex align-items-center">
+            <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center me-2"
+                 style="width: 35px; height: 35px; font-weight: bold;">
+                @User.Identity?.Name?.Substring(0, 1).ToUpper()
+            </div>
+
+            <span class="text-white me-3">
+                Hoşgeldin, <strong class="text-warning">@User.Identity?.Name</strong>
+            </span>
         </li>
         <li class="nav-item">
-            <a class="nav-link btn btn-link text-light" asp-controller="Account" asp-action="Logout">
-                <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+            <a class="btn btn-outline-light btn-sm" asp-controller="Account" asp-action="Logout">
+                <i class="bi bi-box-arrow-right"></i> Çıkış
             </a>
         </li>
     }
     else
     {
-        // --- GİRİŞ YAPILMAMIŞSA (MİSAFİR) ---
-
         <li class="nav-item">
-            <a class="nav-link text-warning fw-bold me-2" asp-controller="Account" asp-action="Register">
-                <i class="bi bi-person-plus"></i> Kayıt Ol
-            </a>
+            <a class="btn btn-outline-light btn-sm px-3" asp-controller="Account" asp-action="Login">Giriş Yap</a>
         </li>
-
         <li class="nav-item">
-            <a class="nav-link text-white fw-bold" asp-controller="Account" asp-action="Login">
-                <i class="bi bi-box-arrow-in-right"></i> Giriş Yap
-            </a>
+            <a class="btn btn-primary btn-sm px-3" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
         </li>
     }
 </ul>

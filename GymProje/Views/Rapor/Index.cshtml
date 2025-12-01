@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Raporlar";
+}
+
+<div class="container mt-4">
+    <h2 class="mb-4"><i class="bi bi-bar-chart-line-fill"></i> Yönetim Raporları</h2>
+
+    <div class="row text-center mb-5">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white shadow p-3">
+                <h3><i class="bi bi-people-fill"></i></h3>
+                <h2 id="lblUye">0</h2>
+                <p>Toplam Üye</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white shadow p-3">
+                <h3><i class="bi bi-person-badge-fill"></i></h3>
+                <h2 id="lblAntrenor">0</h2>
+                <p>Antrenör Sayısı</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-dark shadow p-3">
+                <h3><i class="bi bi-clock-history"></i></h3>
+                <h2 id="lblBekleyen">0</h2>
+                <p>Onay Bekleyen</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white shadow p-3">
+                <h3><i class="bi bi-tags-fill"></i></h3>
+                <h2 id="lblHizmet">0</h2>
+                <p>Hizmet Çeşidi</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">En Çok Tercih Edilen Eğitmenler (Top 5)</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Eğitmen Adı</th>
+                        <th>Toplam Randevu Sayısı</th>
+                    </tr>
+                </thead>
+                <tbody id="tblEgitmenler">
+                    <tr><td colspan="2" class="text-center">Yükleniyor...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // 1. Genel İstatistikleri Çek
+            $.ajax({
+                url: '/api/RaporApi/GenelIstatistik',
+                type: 'GET',
+                success: function (data) {
+                    $("#lblUye").text(data.toplamUye);
+                    $("#lblAntrenor").text(data.toplamAntrenor);
+                    $("#lblHizmet").text(data.toplamHizmet);
+                    $("#lblBekleyen").text(data.bekleyenRandevular);
+                }
+            });
+
+            // 2. Popüler Eğitmenleri Çek
+            $.ajax({
+                url: '/api/RaporApi/PopulerEgitmenler',
+                type: 'GET',
+                success: function (data) {
+                    var tabloHtml = "";
+                    $.each(data, function (index, item) {
+                        tabloHtml += `<tr>
+                                        <td class="fw-bold">${item.egitmenAdi}</td>
+                                        <td><span class="badge bg-primary rounded-pill">${item.randevuSayisi}</span></td>
+                                      </tr>`;
+                    });
+                    $("#tblEgitmenler").html(tabloHtml);
+                },
+                error: function() {
+                    $("#tblEgitmenler").html("<tr><td colspan='2'>Veri bulunamadı.</td></tr>");
+                }
+            });
+        });
+    </script>
+}

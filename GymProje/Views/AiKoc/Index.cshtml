@@ -1,0 +1,96 @@
+﻿@model GymProje.Models.ViewModels.AiTrainerViewModel
+
+@{
+    ViewData["Title"] = "AI Spor Koçu";
+}
+
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold text-primary"><i class="bi bi-robot"></i> AI Spor Koçu</h1>
+        <p class="lead text-muted">Vücut bilgilerinizi girin, yapay zeka size özel program hazırlasın.</p>
+    </div>
+
+    <div class="row">
+        <div class="col-md-5">
+            <div class="card shadow-lg border-0">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Bilgilerinizi Girin</h5>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Index" method="post">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label asp-for="Yas" class="form-label">Yaş</label>
+                                <input asp-for="Yas" class="form-control" placeholder="25" />
+                                <span asp-validation-for="Yas" class="text-danger"></span>
+                            </div>
+                            <div class="col">
+                                <label asp-for="Cinsiyet" class="form-label">Cinsiyet</label>
+                                <select asp-for="Cinsiyet" class="form-select">
+                                    <option value="Kadın">Kadın</option>
+                                    <option value="Erkek">Erkek</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label asp-for="Boy" class="form-label">Boy (cm)</label>
+                                <input asp-for="Boy" class="form-control" placeholder="175" />
+                                <span asp-validation-for="Boy" class="text-danger"></span>
+                            </div>
+                            <div class="col">
+                                <label asp-for="Kilo" class="form-label">Kilo (kg)</label>
+                                <input asp-for="Kilo" class="form-control" placeholder="70" />
+                                <span asp-validation-for="Kilo" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Hedef" class="form-label">Hedefiniz</label>
+                            <select asp-for="Hedef" class="form-select">
+                                <option value="Kilo Vermek">Kilo Vermek / Yağ Yakmak</option>
+                                <option value="Kas Yapmak">Kas Yapmak / Hacim Kazanmak</option>
+                                <option value="Form Korumak">Form Korumak / Sağlıklı Yaşam</option>
+                            </select>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-pill">
+                                <i class="bi bi-magic"></i> Program Oluştur
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7">
+            @if (!string.IsNullOrEmpty(Model?.AiCevabi))
+            {
+                <div class="card shadow-lg border-0 h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-check-circle-fill"></i> Size Özel Program</h5>
+                    </div>
+                    <div class="card-body bg-light">
+                        @Html.Raw(Model.AiCevabi)
+
+                        <div class="alert alert-info mt-3 small">
+                            <i class="bi bi-info-circle"></i> Bu program yapay zeka tarafından öneri amaçlı oluşturulmuştur. Uygulamadan önce antrenörünüze danışın.
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="card h-100 border-0 d-flex align-items-center justify-content-center bg-transparent text-muted">
+                    <div class="text-center p-5">
+                        <i class="bi bi-cpu" style="font-size: 5rem;"></i>
+                        <h3 class="mt-3">Sonuçları Bekliyor...</h3>
+                        <p>Soldaki formu doldurup butona bastığınızda programınız burada görünecek.</p>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

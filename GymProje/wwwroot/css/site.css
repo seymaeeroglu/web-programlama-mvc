@@ -1,93 +1,140 @@
-/* MODERN GYM TEMASI */
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@300;500;700&family=Inter:wght@300;400;600&display=swap');
 
 :root {
-    --primary-color: #2c3e50; /* Koyu Lacivert */
-    --accent-color: #e74c3c; /* Enerjik Kýrmýzý (Spor temasý için) */
-    --light-bg: #f8f9fa;
-}
-
-html {
-    font-size: 14px;
-}
-
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
+    --sidebar-width: 260px;
+    --primary-color: #ff3b30;
+    --dark-bg: #121212;
+    --panel-bg: #1e1e1e;
+    --text-color: #e0e0e0;
 }
 
 body {
-    font-family: 'Poppins', sans-serif; /* Modern Font */
-    background-color: var(--light-bg);
-    color: #333;
-    margin-bottom: 60px;
+    font-family: 'Inter', sans-serif;
+    background-color: var(--dark-bg);
+    color: var(--text-color);
+    margin: 0;
+    overflow-x: hidden;
 }
 
-/* KART TASARIMLARI */
-.card {
-    border: none;
-    border-radius: 15px; /* Yuvarlak köþeler */
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05); /* Hafif gölge */
-    transition: transform 0.2s;
+h1, h2, h3, h4, h5 {
+    font-family: 'Teko', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
-    .card:hover {
-        transform: translateY(-5px); /* Üzerine gelince hafif yukarý kalkar */
+.wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* --- SIDEBAR --- */
+#sidebar {
+    min-width: var(--sidebar-width);
+    max-width: var(--sidebar-width);
+    background: var(--panel-bg);
+    color: #fff;
+    transition: all 0.3s;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow-y: auto;
+    border-right: 1px solid #333;
+    z-index: 1000;
+}
+
+    #sidebar .sidebar-header {
+        padding: 20px;
+        background: #000;
+        border-bottom: 2px solid var(--primary-color);
+        text-align: center;
     }
 
-.card-header {
-    border-radius: 15px 15px 0 0 !important;
-    font-weight: 600;
+    #sidebar ul.components {
+        padding: 10px 0;
+    }
+
+    #sidebar ul li a {
+        padding: 15px 20px;
+        font-size: 1em;
+        display: block;
+        color: #bbb;
+        text-decoration: none;
+        transition: 0.3s;
+        border-left: 4px solid transparent;
+    }
+
+        #sidebar ul li a:hover {
+            color: #fff;
+            background: #252525;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        #sidebar ul li a i {
+            margin-right: 10px;
+            width: 25px;
+            text-align: center;
+        }
+
+/* Menüdeki Kategori Baþlýklarý */
+.section-title {
+    padding: 15px 20px 5px 20px;
+    font-size: 0.85em;
+    font-weight: bold;
+    color: #666;
+    letter-spacing: 1px;
+    margin-top: 10px;
+    border-top: 1px solid #333;
 }
 
-/* BUTONLAR */
-.btn {
-    border-radius: 50px; /* Hap þeklinde butonlar */
-    padding: 8px 20px;
-    font-weight: 500;
-    transition: all 0.3s;
+/* --- YENÝ TOP NAVBAR --- */
+.top-navbar {
+    background-color: #1e1e1e !important; /* Sidebar ile ayný renk */
+    border-bottom: 1px solid #333;
+    padding: 10px 20px;
+}
+
+/* --- SAÐ ÝÇERÝK ALANI --- */
+#content {
+    width: 100%;
+    min-height: 100vh;
+    margin-left: var(--sidebar-width);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    #sidebar {
+        margin-left: -260px;
+    }
+
+    #content {
+        margin-left: 0;
+    }
+}
+
+/* Buton ve Kartlar */
+.card {
+    background-color: var(--panel-bg);
+    border: 1px solid #333;
+    border-radius: 8px;
+}
+
+.card-header {
+    background-color: #252525;
+    color: var(--primary-color);
+    border-bottom: 1px solid #333;
 }
 
 .btn-primary {
     background-color: var(--primary-color);
-    border-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-weight: bold;
 }
 
     .btn-primary:hover {
-        background-color: #1a252f;
-        transform: scale(1.05);
-    }
-
-.btn-danger {
-    background-color: var(--accent-color);
-    border-color: var(--accent-color);
-}
-
-/* TABLOLAR */
-.table {
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-    .table thead {
-        background-color: var(--primary-color);
-        color: white;
-    }
-
-.table-hover tbody tr:hover {
-    background-color: #f1f1f1;
-}
-
-/* INPUTLAR */
-.form-control, .form-select {
-    border-radius: 10px;
-    padding: 10px 15px;
-    border: 1px solid #ced4da;
-}
-
-    .form-control:focus {
-        box-shadow: 0 0 0 3px rgba(44, 62, 80, 0.2);
-        border-color: var(--primary-color);
+        background-color: #d32f2f;
     }
