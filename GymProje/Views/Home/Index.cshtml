@@ -1,8 +1,75 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Ana Sayfa";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container py-5">
+    <div class="row align-items-center g-5 py-5">
+
+        <div class="col-lg-6">
+            <h1 class="display-4 fw-bold lh-1 mb-3 text-dark">
+                HAYALİNDEKİ VÜCUDA <span style="color: var(--brand-red);">BUGÜN BAŞLA</span>
+            </h1>
+            <p class="lead text-muted">
+                ONE CLUB'da en yeni ekipmanlar, uzman antrenörler ve yapay zeka destekli programlarla potansiyelini keşfet. Bahaneleri kapıda bırak.
+            </p>
+            <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                @if (!User.Identity.IsAuthenticated)
+                {
+                    <a asp-controller="Account" asp-action="Register" class="btn btn-primary btn-lg px-4 me-md-2">ÜCRETSİZ KAYIT OL</a>
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-outline-dark btn-lg px-4">GİRİŞ YAP</a>
+                }
+                else
+                {
+                    <a asp-controller="Randevu" asp-action="Create" class="btn btn-primary btn-lg px-4 me-md-2">RANDEVU AL</a>
+                    <a asp-controller="AiKoc" asp-action="Index" class="btn btn-outline-dark btn-lg px-4">AI KOÇU DENE</a>
+                }
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=1000&auto=format&fit=crop"
+                 class="d-block mx-lg-auto img-fluid rounded-3 shadow-lg"
+                 alt="Spor Salonu"
+                 loading="lazy">
+        </div>
+    </div>
+</div>
+
+<div class="container px-4 py-5" id="featured-3">
+    <h2 class="pb-2 border-bottom text-center mb-5">NEDEN ONE CLUB?</h2>
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+
+        <div class="feature col">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-3 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                <i class="bi bi-robot fs-2"></i>
+            </div>
+            <h3>Yapay Zeka Koç</h3>
+            <p class="text-muted">Vücut analizini yapalım, yapay zeka sana en uygun beslenme ve antrenman programını saniyeler içinde hazırlasın.</p>
+            <a asp-controller="AiKoc" asp-action="Index" class="icon-link text-danger fw-bold text-decoration-none">
+                Hemen Dene <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="feature col">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-3 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                <i class="bi bi-person-check fs-2"></i>
+            </div>
+            <h3>Uzman Eğitmenler</h3>
+            <p class="text-muted">Alanında sertifikalı, tecrübeli eğitmenlerimizle birebir çalışma imkanı. Hedefine giden yolda yalnız değilsin.</p>
+            <a asp-controller="Home" asp-action="Egitmenler" class="icon-link text-danger fw-bold text-decoration-none">
+                Eğitmenleri Gör <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
+        <div class="feature col">
+            <div class="feature-icon bg-primary bg-gradient text-white rounded-3 mb-3 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                <i class="bi bi-calendar-check fs-2"></i>
+            </div>
+            <h3>Kolay Randevu</h3>
+            <p class="text-muted">Online sistemimizle dilediğin derse, dilediğin saatte yerini ayırt. Beklemek yok, spor var.</p>
+            <a asp-controller="Home" asp-action="Hizmetler" class="icon-link text-danger fw-bold text-decoration-none">
+                Paketleri İncele <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+    </div>
 </div>

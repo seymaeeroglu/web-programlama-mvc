@@ -4,33 +4,29 @@
 @inject SignInManager<Kullanici> SignInManager
 @inject UserManager<Kullanici> UserManager
 
-<ul class="navbar-nav ms-auto flex-row align-items-center gap-3">
-
+<ul class="navbar-nav align-items-center">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item d-flex align-items-center">
-            <div class="rounded-circle bg-danger text-white d-flex align-items-center justify-content-center me-2"
-                 style="width: 35px; height: 35px; font-weight: bold;">
-                @User.Identity?.Name?.Substring(0, 1).ToUpper()
-            </div>
-
-            <span class="text-white me-3">
-                Hoşgeldin, <strong class="text-warning">@User.Identity?.Name</strong>
-            </span>
-        </li>
-        <li class="nav-item">
-            <a class="btn btn-outline-light btn-sm" asp-controller="Account" asp-action="Logout">
-                <i class="bi bi-box-arrow-right"></i> Çıkış
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle fw-bold text-dark" href="#" role="button" data-bs-toggle="dropdown">
+                <i class="bi bi-person-circle fs-5 me-1"></i> @User.Identity?.Name
             </a>
+            <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+                <li>
+                    <a class="dropdown-item text-danger" asp-controller="Account" asp-action="Logout">
+                        <i class="bi bi-box-arrow-right"></i> Çıkış Yap
+                    </a>
+                </li>
+            </ul>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="btn btn-outline-light btn-sm px-3" asp-controller="Account" asp-action="Login">Giriş Yap</a>
+            <a class="nav-link text-dark fw-bold" asp-controller="Account" asp-action="Login">GİRİŞ YAP</a>
         </li>
-        <li class="nav-item">
-            <a class="btn btn-primary btn-sm px-3" asp-controller="Account" asp-action="Register">Kayıt Ol</a>
+        <li class="nav-item ms-2">
+            <a class="btn btn-primary text-white px-4" asp-controller="Account" asp-action="Register">KAYIT OL</a>
         </li>
     }
 </ul>
