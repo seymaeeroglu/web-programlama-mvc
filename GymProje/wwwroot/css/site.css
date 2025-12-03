@@ -1,37 +1,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Open+Sans:wght@400;600&display=swap');
 
 :root {
-    --brand-red: #E30613; /* MACFit tarzý canlý kýrmýzý */
-    --brand-black: #1a1a1a; /* Tam siyah deðil, yumuþak siyah */
-    --brand-gray: #f4f4f4; /* Çok açýk gri (Arka plan için) */
-    --text-dark: #333333;
+    --brand-red: #E30613; /* ONE CLUB Kýrmýzýsý */
+    --brand-black: #1a1a1a; /* Koyu Siyah */
+    --brand-gray: #f4f4f4; /* Arka Plan Grisi */
+    --text-dark: #333333; /* Yazý Rengi */
 }
 
-/* GENEL AYARLAR */
+/* --- GENEL SAYFA YAPISI --- */
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
 body {
     font-family: 'Open Sans', sans-serif;
-    background-color: #ffffff; /* Bembeyaz zemin */
+    background-color: #ffffff;
     color: var(--text-dark);
-    margin: 0;
-    padding-top: 80px; /* Üst menü sabit olacaðý için içerik aþaðýdan baþlasýn */
+    /* Footer'ý aþaðý itmek için dikey esnek yapý */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    padding-top: 80px; /* Üst menü sabit olduðu için */
 }
 
-/* BAÞLIKLAR (MODERN VE KALIN) */
+/* BAÞLIKLAR */
 h1, h2, h3, h4, h5 {
     font-family: 'Montserrat', sans-serif;
-    font-weight: 800; /* Çok kalýn */
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: -0.5px; /* Harfler birbirine yakýn, modern durur */
+    letter-spacing: -0.5px;
     color: var(--brand-black);
 }
 
 /* --- NAVBAR (ÜST MENÜ) --- */
 .navbar {
-    background-color: #ffffff !important; /* Beyaz Menü */
-    box-shadow: 0 2px 15px rgba(0,0,0,0.05); /* Çok hafif gölge */
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
     padding: 15px 0;
     transition: all 0.3s;
 }
@@ -55,39 +60,41 @@ h1, h2, h3, h4, h5 {
 }
 
     .nav-link:hover {
-        color: var(--brand-red) !important; /* Üzerine gelince kýrmýzý olsun */
+        color: var(--brand-red) !important;
     }
 
-/* --- BUTONLAR (KIRMIZI VE OVAL) --- */
+/* --- BUTONLAR --- */
+.btn {
+    border-radius: 50px; /* Yuvarlak butonlar */
+    padding: 10px 30px;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
 .btn-primary {
     background-color: var(--brand-red);
-    border: none;
-    border-radius: 50px; /* Hap þeklinde buton */
-    padding: 10px 30px;
+    border-color: var(--brand-red);
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.9rem;
-    transition: transform 0.2s;
 }
 
     .btn-primary:hover {
         background-color: #c20510;
-        transform: translateY(-2px); /* Hafif yukarý kalksýn */
+        transform: translateY(-2px);
     }
 
-.btn-outline-dark {
-    border-radius: 50px;
-    padding: 10px 30px;
-    font-weight: 600;
+.btn-outline-dark:hover {
+    background-color: var(--brand-black);
+    color: #fff;
 }
 
-/* --- KARTLAR (TEMÝZ VE GÖLGELÝ) --- */
+/* --- KARTLAR --- */
 .card {
     border: none;
     background-color: #fff;
     border-radius: 12px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05); /* Yumuþak gölge */
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
     transition: 0.3s;
     overflow: hidden;
 }
@@ -106,17 +113,54 @@ h1, h2, h3, h4, h5 {
     padding: 15px;
 }
 
+/* --- TABLOLAR --- */
+.table {
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: white;
+}
+
+    .table thead {
+        background-color: var(--brand-black);
+        color: white;
+    }
+
+.table-hover tbody tr:hover {
+    background-color: #f8f9fa;
+}
+
+/* --- INPUTLAR --- */
+.form-control, .form-select {
+    border-radius: 10px;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+    .form-control:focus {
+        box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.2); /* Kýrmýzý gölge */
+        border-color: var(--brand-red);
+    }
+
+/* --- ÝÇERÝK DÜZENÝ --- */
+/* Bu kod footer'ý aþaðý iter */
+body > .container {
+    flex: 1 0 auto;
+    width: 100%;
+    padding-bottom: 60px;
+}
+
 /* --- FOOTER --- */
 footer {
     background-color: var(--brand-black);
     color: #888;
     padding: 40px 0 20px 0;
     margin-top: auto;
+    flex-shrink: 0;
 }
 
     footer h5 {
         color: #fff;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         font-size: 1.1rem;
     }
 
@@ -130,9 +174,13 @@ footer {
             color: var(--brand-red);
         }
 
-/* Ýçerik Düzeni */
-body > .container {
-    flex: 1 0 auto;
-    width: 100%;
-    padding-bottom: 60px;
+.hover-white:hover {
+    color: #fff !important;
+}
+
+/* --- KART BAÞLIK RENGÝ DÜZELTMESÝ --- */
+.card-header, .card-header h3, .card-header h4, .card-header h5 {
+    color: #ffffff !important; /* Baþlýklarý beyaz yap */
+    text-align: center; /* Ortala */
+    letter-spacing: 2px; /* Harfleri biraz aç, havalý dursun */
 }
