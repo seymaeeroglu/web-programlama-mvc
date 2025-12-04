@@ -178,9 +178,13 @@ footer {
     color: #fff !important;
 }
 
-/* --- KART BAÞLIK RENGÝ DÜZELTMESÝ --- */
 .card-header, .card-header h3, .card-header h4, .card-header h5 {
-    color: #ffffff !important; /* Baþlýklarý beyaz yap */
-    text-align: center; /* Ortala */
-    letter-spacing: 2px; /* Harfleri biraz aç, havalý dursun */
+    color: #ffffff !important; 
+    text-align: center; 
+    letter-spacing: 2px; 
 }
+
+/* 
+   ONE CLUB - RESPONSIVE MOBÝL AYARLARI SONU
+
+*/
