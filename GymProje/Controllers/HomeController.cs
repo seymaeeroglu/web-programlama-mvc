@@ -1,6 +1,7 @@
+// Bu Controller, uygulamanýn vitrin (Anasayfa, Hakkýmýzda vb.) sayfalarýný yönetir.
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; // Include ve ToListAsync için gerekli
+using Microsoft.EntityFrameworkCore; 
 using GymProje.Models;
 using GymProje.Data;
 
