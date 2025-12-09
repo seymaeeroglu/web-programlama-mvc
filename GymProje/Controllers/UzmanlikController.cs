@@ -12,8 +12,6 @@ namespace ProjeIsmi.Controllers
     {
         private readonly ApplicationDbContext _context;
 
-        // Dependency Injection (Bağımlılık Enjeksiyonu)
-        // Veritabanı bağlantısını buraya çağırıyoruz.
         public UzmanlikController(ApplicationDbContext context)
         {
             _context = context;
@@ -48,9 +46,6 @@ namespace ProjeIsmi.Controllers
             return View(uzmanlik); // Hata varsa formu tekrar göster
         }
 
-        // --- DÜZENLEME (EDIT) ---
-
-        // 1. Düzenleme Sayfasını Getir (GET)
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();

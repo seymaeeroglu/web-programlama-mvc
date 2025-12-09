@@ -11,12 +11,12 @@ namespace GymProje.Models
         public DateTime Tarih { get; set; }
 
         [Required]
-        public string Saat { get; set; } = string.Empty; // Başlangıç değeri atandı
+        public string Saat { get; set; } = string.Empty; /
 
         public string Durum { get; set; } = "Bekliyor";
 
         // İlişkiler
-        public string KullaniciId { get; set; } = string.Empty; // ID boş olamaz
+        public string KullaniciId { get; set; } = string.Empty; 
         public Kullanici? Kullanici { get; set; } // Nesne null olabilir (?)
 
         public int AntrenorId { get; set; }

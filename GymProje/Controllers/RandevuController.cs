@@ -71,7 +71,7 @@ namespace GymProje.Controllers
             return View();
         }
 
-        // 3. RANDEVU KAYDETME (POST) - İŞ MANTIĞI BURADA
+    
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Randevu randevu)
@@ -80,7 +80,6 @@ namespace GymProje.Controllers
             if (user == null) return RedirectToAction("Login", "Account");
             randevu.KullaniciId = user.Id;
 
-            // Validasyon temizliği
             ModelState.Remove("Kullanici");
             ModelState.Remove("Antrenor");
             ModelState.Remove("Hizmet");
@@ -88,7 +87,6 @@ namespace GymProje.Controllers
 
             if (ModelState.IsValid)
             {
-                // A. ÇALIŞMA SAATİ KONTROLÜ
                 var antrenor = await _context.Antrenorler.FindAsync(randevu.AntrenorId);
 
                 // Gelen saat "14:00" -> Sadece 14'ü alıyoruz

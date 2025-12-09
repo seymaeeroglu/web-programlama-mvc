@@ -7,11 +7,10 @@ namespace GymProje.Controllers
 {
     public class AccountController : Controller
     {
-        // Hem SignInManager hem de UserManager'ı tanımlıyoruz
         private readonly SignInManager<Kullanici> _signInManager;
         private readonly UserManager<Kullanici> _userManager;
 
-        // Constructor'da (Yapıcı Metot) ikisini de "Dependency Injection" ile alıyoruz
+       
         public AccountController(SignInManager<Kullanici> signInManager, UserManager<Kullanici> userManager)
         {
             _signInManager = signInManager;

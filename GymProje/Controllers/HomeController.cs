@@ -10,14 +10,14 @@ namespace GymProje.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        // 1. Veritabaný Baðlantýsý için deðiþken tanýmlýyoruz
+        
         private readonly ApplicationDbContext _context;
 
         // 2. Constructor (Yapýcý Metot) içine context'i ekliyoruz
         public HomeController(ILogger<HomeController> logger, ApplicationDbContext context)
         {
             _logger = logger;
-            _context = context; // Veritabaný baðlantýsýný aldýk
+            _context = context; 
         }
 
         public IActionResult Index()

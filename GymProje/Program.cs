@@ -5,16 +5,13 @@ using GymProje.Models; // DÝKKAT: Burayý kendi proje adýnýzla deðiþtirin
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Veritabaný Baðlantýsýný Al
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Baðlantý cümlesi (DefaultConnection) bulunamadý.");
 
-// 2. DbContext Servisini Ekle
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// 3. Identity (Üyelik) Servislerini Ekle
-// Kullanici sýnýfý ve IdentityRole sýnýfýný kullanacaðýmýzý belirtiyoruz.
 builder.Services.AddIdentity<Kullanici, IdentityRole>(options =>
 {
     // Geliþtirme aþamasýnda þifre kurallarýný basitleþtiriyoruz (Admin þifresi 'sau' olabilsin diye)

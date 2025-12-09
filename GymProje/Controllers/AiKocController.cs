@@ -1,16 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using GymProje.Models.ViewModels; // ViewModel klasörünü eklemeyi unutma
+using GymProje.Models.ViewModels;
 using System.Text;
-using System.Text.Json; // JSON işlemleri için
+using System.Text.Json; 
 using Microsoft.AspNetCore.Authorization;
 
 namespace GymProje.Controllers
 {
-    [Authorize] // Sadece üyeler girebilsin
+    [Authorize] 
     public class AiKocController : Controller
     {
-        // OpenAI API Key buraya gelecek (Kendi key'in varsa buraya yaz)
-        // Yoksa boş bırak, sistem otomatik simülasyon moduna geçer.
         private readonly string _apiKey = "";
 
         [HttpGet]
