@@ -3,6 +3,7 @@
 }
 
 <div class="container mt-4">
+
     <h2 class="mb-4"><i class="bi bi-bar-chart-line-fill"></i> Yönetim Raporları</h2>
 
     <div class="row text-center mb-5">
@@ -36,7 +37,7 @@
         </div>
     </div>
 
-    <div class="card shadow">
+    <div class="card shadow mb-5">
         <div class="card-header bg-dark text-white">
             <h5 class="mb-0">En Çok Tercih Edilen Eğitmenler (Top 5)</h5>
         </div>
@@ -54,12 +55,57 @@
             </table>
         </div>
     </div>
+
+    <hr class="my-5" style="border-top: 3px solid #dc3545; opacity: 1;">
+
+    <div class="card shadow border-danger">
+        <div class="card-header bg-danger text-white d-flex justify-content-between align-items-center">
+            <h4 class="m-0"><i class="bi bi-cpu-fill"></i> REST API & LINQ Kontrol Paneli</h4>
+            <span class="badge bg-white text-danger fw-bold">ÖDEV KISMI</span>
+        </div>
+        <div class="card-body bg-light">
+            <div class="row align-items-end">
+                <div class="col-md-5">
+                    <label class="fw-bold mb-2">Hangi Tarihi Sorgulayalım? (LINQ Where)</label>
+                    <input type="date" id="apiTarih" class="form-control form-control-lg" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                </div>
+                <div class="col-md-3">
+                    <button class="btn btn-dark btn-lg w-100" onclick="ApiRaporuGetir()">
+                        <i class="bi bi-search"></i> Verileri Getir
+                    </button>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <h5 class="text-secondary border-bottom pb-2">API'den Gelen Canlı Sonuçlar (JSON):</h5>
+                <div class="table-responsive">
+                    <table class="table table-hover bg-white shadow-sm">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Müşteri</th>
+                                <th>Hizmet / Branş</th>
+                                <th>Saat</th>
+                                <th>Durum</th>
+                            </tr>
+                        </thead>
+                        <tbody id="apiTabloGovdesi">
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-3">
+                                    <em>Henüz sorgu yapılmadı. Tarih seçip butona basın.</em>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 @section Scripts {
     <script>
         $(document).ready(function () {
-            // 1. Genel İstatistikleri Çek
+            // 1. Genel İstatistikleri Çek (Senin Eski Kodun)
             $.ajax({
                 url: '/api/RaporApi/GenelIstatistik',
                 type: 'GET',
@@ -71,7 +117,7 @@
                 }
             });
 
-            // 2. Popüler Eğitmenleri Çek
+            // 2. Popüler Eğitmenleri Çek (Senin Eski Kodun)
             $.ajax({
                 url: '/api/RaporApi/PopulerEgitmenler',
                 type: 'GET',
@@ -90,5 +136,49 @@
                 }
             });
         });
+
+        // 3. YENİ API FONKSİYONU (Bizim Eklediğimiz Kısım)
+        async function ApiRaporuGetir() {
+            var tarih = document.getElementById("apiTarih").value;
+            var tablo = document.getElementById("apiTabloGovdesi");
+
+            // Yükleniyor animasyonu
+            tablo.innerHTML = '<tr><td colspan="4" class="text-center py-3"><div class="spinner-border text-danger"></div> Veriler API\'den çekiliyor...</td></tr>';
+
+            try {
+                // REST API'ye İstek At
+                var response = await fetch(`/api/RaporApi/GunlukRapor?tarih=${tarih}`);
+
+                if (!response.ok) throw new Error("API Bağlantı Hatası");
+
+                var data = await response.json();
+
+                tablo.innerHTML = ""; // Tabloyu temizle
+
+                if(data.length === 0) {
+                    tablo.innerHTML = '<tr><td colspan="4" class="text-center text-danger fw-bold py-3"><i class="bi bi-exclamation-circle"></i> Bu tarihte kayıtlı randevu bulunamadı!</td></tr>';
+                    return;
+                }
+
+                // Gelen JSON verisini tabloya bas
+                data.forEach(item => {
+                    var row = `<tr>
+                        <td class="fw-bold">${item.musteri}</td>
+                        <td><span class="badge bg-info text-dark">${item.hizmet}</span></td>
+                        <td>${item.saat}</td>
+                        <td>
+                            ${item.durum === 'Onaylandı' || item.durum === 'Onaylı'
+                                ? '<span class="badge bg-success">Onaylı</span>'
+                                : '<span class="badge bg-warning text-dark">Bekliyor</span>'}
+                        </td>
+                    </tr>`;
+                    tablo.innerHTML += row;
+                });
+
+            } catch (err) {
+                console.error(err);
+                tablo.innerHTML = `<tr><td colspan="4" class="text-center text-danger">Hata oluştu: ${err.message}</td></tr>`;
+            }
+        }
     </script>
 }

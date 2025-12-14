@@ -11,7 +11,7 @@ namespace GymProje.Models
         public DateTime Tarih { get; set; }
 
         [Required]
-        public string Saat { get; set; } = string.Empty; /
+        public string Saat { get; set; } = string.Empty; 
 
         public string Durum { get; set; } = "Bekliyor";
 
