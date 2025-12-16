@@ -13,6 +13,17 @@
                 </div>
                 <div class="card-body p-4">
 
+                    <div class="alert alert-info d-flex align-items-center shadow-sm mb-4" role="alert">
+                        <i class="bi bi-info-circle-fill fs-3 me-3"></i>
+                        <div>
+                            <h5 class="alert-heading fw-bold mb-1">📢 Çalışma Saatlerimiz</h5>
+                            <p class="mb-0">
+                                Spor salonumuz haftanın her günü <strong>09:00 - 00:00</strong> saatleri arasında açıktır.
+                                <br />
+                                <small class="text-muted">(Not: Eğitmenlerin özel ders saatleri kendi programlarına göre değişiklik gösterebilir.)</small>
+                            </p>
+                        </div>
+                    </div>
                     <form asp-action="Create" method="post">
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
 
@@ -40,6 +51,9 @@
                                 <option value="18:00">18:00</option>
                                 <option value="19:00">19:00</option>
                                 <option value="20:00">20:00</option>
+                                <option value="21:00">21:00</option>
+                                <option value="22:00">22:00</option>
+                                <option value="23:00">23:00</option>
                             </select>
                             <span asp-validation-for="Saat" class="text-danger"></span>
                         </div>

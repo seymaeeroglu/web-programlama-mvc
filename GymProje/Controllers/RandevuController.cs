@@ -71,7 +71,7 @@ namespace GymProje.Controllers
             return View();
         }
 
-    
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Randevu randevu)
@@ -87,11 +87,35 @@ namespace GymProje.Controllers
 
             if (ModelState.IsValid)
             {
+                // -----------------------------------------------------------
+                // 1. ADIM: GENEL SPOR SALONU SAAT KONTROLÜ (09:00 - 00:00)
+                // -----------------------------------------------------------
+                int randevuSaati = 0;
+                try
+                {
+                    // "14:00" -> 14 olarak alır
+                    randevuSaati = int.Parse(randevu.Saat.Split(':')[0]);
+                }
+                catch
+                {
+                    randevuSaati = 0;
+                }
+
+                // Saat 9'dan küçükse (00, 01, ... 08) KAPALI demektir.
+                // Not: Gece 12 (00:00) randevusu da teknik olarak 0 olduğu için engellenir.
+                // 23:00 son seans olur.
+                if (randevuSaati < 9)
+                {
+                    ModelState.AddModelError("", "Spor salonumuz sadece 09:00 - 00:00 saatleri arasında hizmet vermektedir.");
+                    YenidenDoldur(randevu);
+                    return View(randevu);
+                }
+                // -----------------------------------------------------------
+
+
                 var antrenor = await _context.Antrenorler.FindAsync(randevu.AntrenorId);
 
-                // Gelen saat "14:00" -> Sadece 14'ü alıyoruz
-                int randevuSaati = int.Parse(randevu.Saat.Split(':')[0]);
-
+                // 2. ADIM: EĞİTMENİN ÖZEL ÇALIŞMA SAATLERİ KONTROLÜ
                 if (randevuSaati < antrenor?.CalismaBaslangicSaati || randevuSaati >= antrenor?.CalismaBitisSaati)
                 {
                     ModelState.AddModelError("", $"Seçtiğiniz eğitmen sadece {antrenor.CalismaBaslangicSaati}:00 - {antrenor.CalismaBitisSaati}:00 saatleri arasında çalışmaktadır.");
@@ -99,7 +123,7 @@ namespace GymProje.Controllers
                     return View(randevu);
                 }
 
-                // B. EĞİTMEN DOLU MU? (Çakışma Kontrolü)
+                // 3. ADIM: EĞİTMEN DOLU MU? (Çakışma Kontrolü)
                 // İptal edilen randevular (Durum != "İptal Edildi") engel teşkil etmemeli.
                 bool egitmenDoluMu = await _context.Randevular.AnyAsync(r =>
                     r.AntrenorId == randevu.AntrenorId &&
@@ -114,7 +138,7 @@ namespace GymProje.Controllers
                     return View(randevu);
                 }
 
-                // C. KULLANICI DOLU MU? (Senin aynı saatte başka randevun var mı?)
+                // 4. ADIM: KULLANICI DOLU MU? (Senin aynı saatte başka randevun var mı?)
                 bool kullaniciDoluMu = await _context.Randevular.AnyAsync(r =>
                     r.KullaniciId == user.Id &&
                     r.Tarih == randevu.Tarih &&
