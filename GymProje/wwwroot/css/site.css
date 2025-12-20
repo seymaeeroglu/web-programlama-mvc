@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&family=Open+Sans:wght@400;600&display=swap');
 
 :root {
-    --brand-red: #E30613; /* ONE CLUB Kýrmýzýsý */
-    --brand-black: #1a1a1a; /* Koyu Siyah */
-    --brand-gray: #f4f4f4; /* Arka Plan Grisi */
-    --text-dark: #333333; /* Yazý Rengi */
+    --brand-red: #E30613; 
+    --brand-black: #1a1a1a; 
+    --brand-gray: #f4f4f4; 
+    --text-dark: #333333; 
 }
 
-/* --- GENEL SAYFA YAPISI --- */
+
 html, body {
     height: 100%;
     margin: 0;
@@ -17,14 +17,13 @@ body {
     font-family: 'Open Sans', sans-serif;
     background-color: #ffffff;
     color: var(--text-dark);
-    /* Footer'ý aþaðý itmek için dikey esnek yapý */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding-top: 80px; /* Üst menü sabit olduðu için */
+    padding-top: 80px; 
 }
 
-/* BAÞLIKLAR */
+
 h1, h2, h3, h4, h5 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 800;
@@ -33,7 +32,7 @@ h1, h2, h3, h4, h5 {
     color: var(--brand-black);
 }
 
-/* --- NAVBAR (ÜST MENÜ) --- */
+
 .navbar {
     background-color: #ffffff !important;
     box-shadow: 0 2px 15px rgba(0,0,0,0.05);
@@ -63,9 +62,9 @@ h1, h2, h3, h4, h5 {
         color: var(--brand-red) !important;
     }
 
-/* --- BUTONLAR --- */
+
 .btn {
-    border-radius: 50px; /* Yuvarlak butonlar */
+    border-radius: 50px; 
     padding: 10px 30px;
     font-weight: 600;
     transition: all 0.3s;
@@ -89,7 +88,7 @@ h1, h2, h3, h4, h5 {
     color: #fff;
 }
 
-/* --- KARTLAR --- */
+
 .card {
     border: none;
     background-color: #fff;
@@ -113,7 +112,7 @@ h1, h2, h3, h4, h5 {
     padding: 15px;
 }
 
-/* --- TABLOLAR --- */
+
 .table {
     border-radius: 10px;
     overflow: hidden;
@@ -129,7 +128,6 @@ h1, h2, h3, h4, h5 {
     background-color: #f8f9fa;
 }
 
-/* --- INPUTLAR --- */
 .form-control, .form-select {
     border-radius: 10px;
     padding: 12px 15px;
@@ -137,19 +135,18 @@ h1, h2, h3, h4, h5 {
 }
 
     .form-control:focus {
-        box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.2); /* Kýrmýzý gölge */
+        box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.2); 
         border-color: var(--brand-red);
     }
 
-/* --- ÝÇERÝK DÜZENÝ --- */
-/* Bu kod footer'ý aþaðý iter */
+
 body > .container {
     flex: 1 0 auto;
     width: 100%;
     padding-bottom: 60px;
 }
 
-/* --- FOOTER --- */
+
 footer {
     background-color: var(--brand-black);
     color: #888;

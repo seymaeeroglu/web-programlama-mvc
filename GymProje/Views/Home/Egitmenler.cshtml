@@ -4,9 +4,9 @@
     ViewData["Title"] = "Eğitmen Kadrosu";
 }
 
-<div class="container mt-5">
+<div class="container mt-5 py-5">
     <div class="text-center mb-5">
-        <h1 class="display-4 fw-bold text-uppercase">Eğitmen Kadromuz</h1>
+        <h1 class="display-4 fw-bold text-uppercase">EĞİTMEN KADROMUZ</h1>
         <p class="text-muted lead">Alanında uzman antrenörlerimizle hedeflerinize ulaşın.</p>
     </div>
 
@@ -16,45 +16,38 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow border-0 text-center hover-effect">
 
-                    <div class="card-img-top pt-4">
-                        @if (!string.IsNullOrEmpty(item.ResimYolu))
-                        {
-                            <img src="@item.ResimYolu" class="rounded-circle border border-3 border-primary"
-                                 width="150" height="150" style="object-fit:cover;" alt="@item.AdSoyad">
-                        }
-                        else
-                        {
-                            <div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center border border-3 border-secondary"
-                                 style="width: 150px; height: 150px;">
-                                <i class="bi bi-person-fill text-secondary" style="font-size: 4rem;"></i>
-                            </div>
-                        }
-                    </div>
+                    <div class="card-body p-5">
+                        <h3 class="card-title fw-bold text-dark mb-2">@item.AdSoyad</h3>
 
-                    <div class="card-body">
-                        <h4 class="card-title fw-bold mt-2">@item.AdSoyad</h4>
+                        <span class="badge bg-primary px-3 py-2 mb-4 rounded-pill" style="font-size: 0.9rem;">
+                            @if (item.Uzmanlik != null)
+                            {
+                                @item.Uzmanlik.Ad
+                            }
+                            else
+                            {
 
-                        <span class="badge bg-info text-dark mb-3 fs-6">
-                            @item.Uzmanlik?.Ad Uzmanı
+                                <text>Genel</text>
+                            }
+     Uzmanı
                         </span>
 
-                        <hr />
-
-                        <p class="card-text text-muted">
-                            <i class="bi bi-clock-history text-danger"></i> Çalışma Saatleri:<br>
-                            <strong>@item.CalismaBaslangicSaati:00 - @item.CalismaBitisSaati:00</strong>
-                        </p>
+                        <div class="text-muted mb-4">
+                            <i class="bi bi-clock-history text-danger me-1"></i>
+                            <span class="fw-bold">Çalışma Saatleri:</span><br>
+                            @item.CalismaBaslangicSaati:00 - @item.CalismaBitisSaati:00
+                        </div>
 
                         @if (User.Identity.IsAuthenticated)
                         {
                             <a asp-controller="Randevu" asp-action="Create" asp-route-antrenorId="@item.Id"
-                               class="btn btn-outline-primary rounded-pill w-75 mt-2">
-                                <i class="bi bi-calendar-plus"></i> Randevu Al
+                               class="btn btn-outline-primary rounded-pill w-100 fw-bold">
+                                <i class="bi bi-calendar-plus me-2"></i> Randevu Al
                             </a>
                         }
                         else
                         {
-                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary rounded-pill w-75 mt-2">Giriş Yap</a>
+                            <a asp-controller="Account" asp-action="Login" class="btn btn-outline-secondary rounded-pill w-100 fw-bold">Giriş Yap</a>
                         }
                     </div>
                 </div>
@@ -62,3 +55,14 @@
         }
     </div>
 </div>
+
+<style>
+    .hover-effect {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .hover-effect:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+</style>

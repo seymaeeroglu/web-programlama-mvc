@@ -16,9 +16,7 @@ namespace GymProje.Controllers
             _context = context;
         }
 
-        // =============================================================
-        // BÖLÜM 1: HOCANIN İSTEDİĞİ LINQ SORGULARI (ÖDEV KISMI)
-        // =============================================================
+  
 
         // 1. GÜNLÜK RAPOR GETİR
         [HttpGet("GunlukRapor")]
@@ -29,7 +27,7 @@ namespace GymProje.Controllers
             var sonuclar = await _context.Randevular
                 .Include(r => r.Kullanici)  // Üye bilgilerini getir
                 .Include(r => r.Hizmet)     // Hizmet detaylarını getir (Süre, Ücret)
-                    .ThenInclude(h => h.Uzmanlik) // DÜZELTME: Hizmetin içindeki Uzmanlık Adını almak için
+                    .ThenInclude(h => h.Uzmanlik) // Hizmetin içindeki Uzmanlık Adını almak için
                 .Where(r => r.Tarih.Date == tarih.Value.Date) // LINQ Filtreleme
                 .Select(r => new
                 {
@@ -63,10 +61,6 @@ namespace GymProje.Controllers
             return Ok(trainers);
         }
 
-        // =============================================================
-        // BÖLÜM 2: YÖNETİM PANELİ DASHBOARD (HATALAR GİDERİLDİ)
-        // =============================================================
-
         // 3. GENEL İSTATİSTİKLER
         [HttpGet("GenelIstatistik")]
         public async Task<IActionResult> GetGenelIstatistik()
@@ -77,7 +71,6 @@ namespace GymProje.Controllers
                 ToplamAntrenor = await _context.Antrenorler.CountAsync(),
                 ToplamHizmet = await _context.Hizmetler.CountAsync(),
 
-                // DÜZELTME: r.Onaylandi (bool) yerine r.Durum (string) kontrolü yaptık
                 BekleyenRandevular = await _context.Randevular.CountAsync(r => r.Durum == "Bekliyor")
             };
             return Ok(veri);

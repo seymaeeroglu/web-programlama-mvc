@@ -20,7 +20,6 @@ namespace GymProje.Controllers
         // 1. LİSTELEME (Index)
         public async Task<IActionResult> Index()
         {
-            // Hizmetleri getirirken bağlı olduğu Uzmanlık bilgisini de (Include) getir
             var hizmetler = await _context.Hizmetler.Include(h => h.Uzmanlik).ToListAsync();
             return View(hizmetler);
         }
@@ -28,7 +27,6 @@ namespace GymProje.Controllers
         // 2. EKLEME SAYFASI (GET)
         public IActionResult Create()
         {
-            // Dropdown için branşları view'a gönderiyoruz
             ViewData["UzmanlikId"] = new SelectList(_context.Uzmanliklar, "Id", "Ad");
             return View();
         }
@@ -38,7 +36,7 @@ namespace GymProje.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Hizmet hizmet)
         {
-            // Uzmanlik nesnesi formdan gelmez, sadece ID gelir. Hata vermesin diye siliyoruz.
+            
             ModelState.Remove("Uzmanlik");
 
             if (ModelState.IsValid)
@@ -47,7 +45,7 @@ namespace GymProje.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            // Hata varsa dropdown'ı tekrar doldur
+
             ViewData["UzmanlikId"] = new SelectList(_context.Uzmanliklar, "Id", "Ad", hizmet.UzmanlikId);
             return View(hizmet);
         }

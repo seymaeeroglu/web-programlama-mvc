@@ -11,7 +11,7 @@ namespace GymProje.Models
         public string AdSoyad { get; set; } = string.Empty; // Başlangıç değeri atandı
 
         [Display(Name = "Fotoğraf")]
-        public string? ResimYolu { get; set; } // Zaten '?' var, sorun yok
+        public string? ResimYolu { get; set; } 
 
         [Range(0, 23)]
         public int CalismaBaslangicSaati { get; set; }
@@ -20,8 +20,8 @@ namespace GymProje.Models
 
         // İlişkiler
         public int UzmanlikId { get; set; }
-        public Uzmanlik? Uzmanlik { get; set; } // '?' ekledik (Hata vermemesi için)
+        public Uzmanlik? Uzmanlik { get; set; } 
 
-        public ICollection<Randevu> Randevular { get; set; } = new List<Randevu>(); // Liste başlatıldı
+        public ICollection<Randevu> Randevular { get; set; } = new List<Randevu>(); 
     }
 }

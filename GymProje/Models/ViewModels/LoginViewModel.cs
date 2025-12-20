@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GymProje.Models.ViewModels // Kendi proje adınızı yazın
+namespace GymProje.Models.ViewModels 
 {
     public class LoginViewModel
     {

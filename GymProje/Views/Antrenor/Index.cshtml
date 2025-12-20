@@ -1,54 +1,64 @@
 ﻿@model IEnumerable<GymProje.Models.Antrenor>
 
 @{
-    ViewData["Title"] = "Antrenörler";
+    ViewData["Title"] = "Antrenör Yönetimi";
 }
 
-<div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Antrenör Kadrosu</h2>
-        <a asp-action="Create" class="btn btn-primary">
-            <i class="bi bi-person-plus-fill"></i> Yeni Antrenör Ekle
+@if (TempData["HataMesaji"] != null)
+{
+    <div class="container mt-3">
+        <div class="alert alert-danger alert-dismissible fade show shadow-sm" role="alert">
+            <i class="bi bi-exclamation-triangle-fill me-2 display-6 align-middle"></i>
+            <span class="align-middle fw-bold">@TempData["HataMesaji"]</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    </div>
+}
+
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>🏋️‍♂️ Antrenör Yönetim Paneli</h2>
+        <a asp-action="Create" class="btn btn-success btn-lg">
+            <i class="bi bi-plus-circle"></i> Yeni Antrenör Ekle
         </a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-hover align-middle shadow-sm">
-            <thead class="table-dark">
-                <tr>
-                    <th>Fotoğraf</th>
-                    <th>Ad Soyad</th>
-                    <th>Uzmanlık</th>
-                    <th>Çalışma Saatleri</th>
-                    <th>İşlemler</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model)
-                {
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover table-bordered align-middle">
+                <thead class="table-dark">
                     <tr>
-                        <td>
-                            @if (!string.IsNullOrEmpty(item.ResimYolu))
-                            {
-                                <img src="@item.ResimYolu" class="rounded-circle" width="50" height="50" style="object-fit:cover;" />
-                            }
-                            else
-                            {
-                                <span class="badge bg-secondary">Resim Yok</span>
-                            }
-                        </td>
-                        <td class="fw-bold">@item.AdSoyad</td>
-                        <td>
-                            <span class="badge bg-info text-dark">@item.Uzmanlik?.Ad</span>
-                        </td>
-                        <td>@item.CalismaBaslangicSaati:00 - @item.CalismaBitisSaati:00</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-outline-warning">Düzenle</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-outline-danger">Sil</a>
-                        </td>
+                        <th>Ad Soyad</th>
+                        <th>Uzmanlık Alanı</th>
+                        <th>Çalışma Saatleri</th>
+                        <th class="text-center">İşlemler</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="fw-bold">@item.AdSoyad</td>
+                            <td>
+                                <span class="badge bg-info text-dark">
+                                    @(item.Uzmanlik != null ? item.Uzmanlik.Ad : "Genel")
+                                </span>
+                            </td>
+                            <td>
+                                @item.CalismaBaslangicSaati:00 - @item.CalismaBitisSaati:00
+                            </td>
+                            <td class="text-center">
+                                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning btn-sm me-2">
+                                    <i class="bi bi-pencil-square"></i> Düzenle
+                                </a>
+                                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">
+                                    <i class="bi bi-trash"></i> Sil
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>

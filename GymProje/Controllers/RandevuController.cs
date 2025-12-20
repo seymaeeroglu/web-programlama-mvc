@@ -29,10 +29,9 @@ namespace GymProje.Controllers
             var randevular = _context.Randevular
                 .Include(r => r.Antrenor)
                 .Include(r => r.Hizmet)
-                .ThenInclude(h => h.Uzmanlik) // Hizmetin branşını da görelim
+                .ThenInclude(h => h.Uzmanlik)
                 .AsQueryable();
 
-            // user değişkeninin boş olmadığını garanti ediyoruz
             if (user != null && !User.IsInRole("Admin"))
             {
                 randevular = randevular.Where(r => r.KullaniciId == user.Id);
@@ -52,9 +51,17 @@ namespace GymProje.Controllers
                 return View();
             }
 
-            // 1. ANTRENÖRÜ SEÇİLİ GETİRMEK İÇİN
-            // Eğer URL'den antrenorId geldiyse (Eğitmenler sayfasından) onu seçili yap
-            ViewData["AntrenorId"] = new SelectList(_context.Antrenorler, "Id", "AdSoyad", antrenorId);
+            var antrenorListesi = _context.Antrenorler
+                .Include(a => a.Uzmanlik)
+                .Select(a => new
+                {
+                    Id = a.Id,
+                    AdBilgisi = $"{a.AdSoyad} - {(a.Uzmanlik != null ? a.Uzmanlik.Ad : "Genel")}"
+                })
+                .ToList();
+
+            // Eğer URL'den antrenorId geldiyse onu seçili yap
+            ViewData["AntrenorId"] = new SelectList(antrenorListesi, "Id", "AdBilgisi", antrenorId);
 
             // 2. HİZMETİ SEÇİLİ GETİRMEK İÇİN
             var hizmetListesi = _context.Hizmetler
@@ -71,7 +78,6 @@ namespace GymProje.Controllers
             return View();
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Randevu randevu)
@@ -87,44 +93,32 @@ namespace GymProje.Controllers
 
             if (ModelState.IsValid)
             {
-                // -----------------------------------------------------------
-                // 1. ADIM: GENEL SPOR SALONU SAAT KONTROLÜ (09:00 - 00:00)
-                // -----------------------------------------------------------
+                // 1. SAAT KONTROLÜ (09:00 - 00:00)
                 int randevuSaati = 0;
                 try
                 {
-                    // "14:00" -> 14 olarak alır
                     randevuSaati = int.Parse(randevu.Saat.Split(':')[0]);
                 }
-                catch
-                {
-                    randevuSaati = 0;
-                }
+                catch { randevuSaati = 0; }
 
-                // Saat 9'dan küçükse (00, 01, ... 08) KAPALI demektir.
-                // Not: Gece 12 (00:00) randevusu da teknik olarak 0 olduğu için engellenir.
-                // 23:00 son seans olur.
                 if (randevuSaati < 9)
                 {
                     ModelState.AddModelError("", "Spor salonumuz sadece 09:00 - 00:00 saatleri arasında hizmet vermektedir.");
                     YenidenDoldur(randevu);
                     return View(randevu);
                 }
-                // -----------------------------------------------------------
-
 
                 var antrenor = await _context.Antrenorler.FindAsync(randevu.AntrenorId);
 
-                // 2. ADIM: EĞİTMENİN ÖZEL ÇALIŞMA SAATLERİ KONTROLÜ
+                // 2. EĞİTMEN SAAT KONTROLÜ
                 if (randevuSaati < antrenor?.CalismaBaslangicSaati || randevuSaati >= antrenor?.CalismaBitisSaati)
                 {
                     ModelState.AddModelError("", $"Seçtiğiniz eğitmen sadece {antrenor.CalismaBaslangicSaati}:00 - {antrenor.CalismaBitisSaati}:00 saatleri arasında çalışmaktadır.");
-                    YenidenDoldur(randevu); // Hata durumunda kutuları tekrar doldur
+                    YenidenDoldur(randevu);
                     return View(randevu);
                 }
 
-                // 3. ADIM: EĞİTMEN DOLU MU? (Çakışma Kontrolü)
-                // İptal edilen randevular (Durum != "İptal Edildi") engel teşkil etmemeli.
+                // 3. EĞİTMEN DOLULUK KONTROLÜ
                 bool egitmenDoluMu = await _context.Randevular.AnyAsync(r =>
                     r.AntrenorId == randevu.AntrenorId &&
                     r.Tarih == randevu.Tarih &&
@@ -138,7 +132,7 @@ namespace GymProje.Controllers
                     return View(randevu);
                 }
 
-                // 4. ADIM: KULLANICI DOLU MU? (Senin aynı saatte başka randevun var mı?)
+                // 4. KULLANICI DOLULUK KONTROLÜ
                 bool kullaniciDoluMu = await _context.Randevular.AnyAsync(r =>
                     r.KullaniciId == user.Id &&
                     r.Tarih == randevu.Tarih &&
@@ -152,46 +146,50 @@ namespace GymProje.Controllers
                     return View(randevu);
                 }
 
-                // Her şey temizse kaydet
                 _context.Add(randevu);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
-            // Model hatalıysa sayfayı geri yükle
             YenidenDoldur(randevu);
             return View(randevu);
         }
 
         // --- YARDIMCI METOD: Hata Durumunda Dropdownları Tekrar Doldur ---
         private void YenidenDoldur(Randevu randevu)
-        {
-            ViewData["AntrenorId"] = new SelectList(_context.Antrenorler, "Id", "AdSoyad", randevu.AntrenorId);
+        {               
+            var antrenorListesi = _context.Antrenorler
+                .Include(a => a.Uzmanlik)
+                .Select(a => new
+                {
+                    Id = a.Id,
+                    AdBilgisi = $"{a.AdSoyad} - {(a.Uzmanlik != null ? a.Uzmanlik.Ad : "Genel")}"
+                })
+                .ToList();
 
-            // Sadece o hocanın hizmetlerini mi, yoksa hepsini mi getirelim?
-            // Hata durumunda JS tekrar çalışmayabilir, en garantisi seçili hocaya göre doldurmak.
+            ViewData["AntrenorId"] = new SelectList(antrenorListesi, "Id", "AdBilgisi", randevu.AntrenorId);
+
             if (randevu.AntrenorId != 0)
             {
                 var antrenor = _context.Antrenorler.Find(randevu.AntrenorId);
                 if (antrenor != null)
                 {
                     var hizmetler = _context.Hizmetler
+                        .Include(h => h.Uzmanlik)
                         .Where(h => h.UzmanlikId == antrenor.UzmanlikId)
                          .Select(h => new
                          {
                              Id = h.Id,
-                             Metin = $"{h.SureDk}dk - {h.Ucret} TL"
+                             Metin = $"{(h.Uzmanlik != null ? h.Uzmanlik.Ad : "")} - {h.SureDk}dk - {h.Ucret} TL"
                          }).ToList();
                     ViewData["HizmetId"] = new SelectList(hizmetler, "Id", "Metin", randevu.HizmetId);
                     return;
                 }
             }
-
-            // Eğer hoca seçili değilse boş gönder
             ViewData["HizmetId"] = new SelectList(new List<string>());
         }
 
-        // --- ADMİN İŞLEMLERİ (ONAYLA / İPTAL ET) ---
+        // --- ADMİN İŞLEMLERİ ---
         [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -214,11 +212,12 @@ namespace GymProje.Controllers
             if (antrenor == null) return Json(null);
 
             var hizmetler = await _context.Hizmetler
+                .Include(h => h.Uzmanlik)
                 .Where(h => h.UzmanlikId == antrenor.UzmanlikId)
                 .Select(h => new
                 {
                     id = h.Id,
-                    metin = $"{h.SureDk}dk - {h.Ucret} TL"
+                    metin = $"{h.Uzmanlik.Ad} - {h.SureDk}dk - {h.Ucret} TL"
                 })
                 .ToListAsync();
 

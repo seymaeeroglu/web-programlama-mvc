@@ -17,12 +17,12 @@ namespace GymProje.Models
 
         // İlişkiler
         public string KullaniciId { get; set; } = string.Empty; 
-        public Kullanici? Kullanici { get; set; } // Nesne null olabilir (?)
+        public Kullanici? Kullanici { get; set; } // Nesne null olabilir 
 
         public int AntrenorId { get; set; }
-        public Antrenor? Antrenor { get; set; } // Nesne null olabilir (?)
+        public Antrenor? Antrenor { get; set; } // Nesne null olabil
 
         public int HizmetId { get; set; }
-        public Hizmet? Hizmet { get; set; } // Nesne null olabilir (?)
+        public Hizmet? Hizmet { get; set; } // Nesne null olabilir 
     }
 }

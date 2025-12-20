@@ -60,13 +60,12 @@ namespace GymProje.Controllers
             {
                 var user = new Kullanici
                 {
-                    UserName = model.Email, // Kullanıcı adı olarak e-posta kullanıyoruz
+                    UserName = model.Email,
                     Email = model.Email,
                     Ad = model.Ad,
                     Soyad = model.Soyad
                 };
 
-                // Kullanıcıyı oluştur (Artık _userManager tanımlı olduğu için hata vermez)
                 var result = await _userManager.CreateAsync(user, model.Sifre);
 
                 if (result.Succeeded)
@@ -87,7 +86,6 @@ namespace GymProje.Controllers
             return View(model);
         }
 
-        // Çıkış Yap
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();

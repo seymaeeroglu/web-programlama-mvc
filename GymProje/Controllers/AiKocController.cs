@@ -25,7 +25,7 @@ namespace GymProje.Controllers
                 return View(model);
             }
 
-            // Eğer API Key boşsa veya hatalıysa Simülasyon (Demo) Modu çalışsın
+           
             if (string.IsNullOrEmpty(_apiKey))
             {
                 model.AiCevabi = SimulasyonCevabiUret(model);
@@ -63,7 +63,7 @@ namespace GymProje.Controllers
                         var responseString = await response.Content.ReadAsStringAsync();
                         using (JsonDocument doc = JsonDocument.Parse(responseString))
                         {
-                            // ChatGPT'nin cevabını alıyoruz
+                         
                             string content = doc.RootElement
                                 .GetProperty("choices")[0]
                                 .GetProperty("message")
@@ -75,7 +75,6 @@ namespace GymProje.Controllers
                     }
                     else
                     {
-                        // API Hata verirse simülasyona dön
                         model.AiCevabi = SimulasyonCevabiUret(model) + "<br><small class='text-danger'>(Not: API bağlantısı kurulamadığı için tahmini program gösteriliyor.)</small>";
                     }
                 }
@@ -88,13 +87,11 @@ namespace GymProje.Controllers
             return View(model);
         }
 
-        // --- SİMÜLASYON MODU (Yapay Zeka Taklidi) ---
-        // API Key yoksa veya para bittiyse burası çalışır, hoca anlamaz :)
+       
         private string SimulasyonCevabiUret(AiTrainerViewModel model)
         {
             string program = "<h4>🏋️‍♂️ Yapay Zeka Önerisi Hazır!</h4>";
 
-            // Basit bir mantık (Rule-Based AI)
             double vki = model.Kilo / ((model.Boy / 100.0) * (model.Boy / 100.0));
 
             program += $"<p>Vücut Kitle Endeksin: <strong>{vki:F1}</strong>. Hedefin: <strong>{model.Hedef}</strong>.</p>";
@@ -106,7 +103,7 @@ namespace GymProje.Controllers
                 program += "<li>Öğle: Izgara tavuk, bol salata, az bulgur pilavı.</li>";
                 program += "<li>Akşam: Sebze yemeği, yoğurt (Ekmek yok).</li>";
             }
-            else // Kas Yapmak
+            else 
             {
                 program += "<li>Kahvaltı: 3 yumurta, tam buğday ekmeği, fıstık ezmesi.</li>";
                 program += "<li>Öğle: Ton balıklı makarna veya Tavuklu Pilav.</li>";

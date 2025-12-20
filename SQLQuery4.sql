@@ -1,0 +1,3 @@
+﻿UPDATE AspNetUsers
+SET PasswordHash = 'AQAAAAIAAYagAAAAEBH15XWi/0DoeX7ap0rAwV+QtbxhwHYPFYYVB8UAQHZq5+JpLt3XzJDgA7YkdMfScA=='
+WHERE Email = 'G231210062@sakarya.edu.tr'

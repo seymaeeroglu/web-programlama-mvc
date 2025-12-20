@@ -36,8 +36,7 @@ namespace ProjeIsmi.Controllers
         [ValidateAntiForgeryToken] // Güvenlik önlemi (CSRF saldırılarına karşı)
         public async Task<IActionResult> Create(Uzmanlik uzmanlik)
         {
-            // Gelen veri kurallara uyuyor mu? (Örn: Ad alanı dolu mu?)
-            if (ModelState.IsValid)
+            // Gelen veri kurallara uyuyor mu? 
             {
                 _context.Add(uzmanlik);          // RAM'e ekle
                 await _context.SaveChangesAsync(); // Veritabanına yaz
@@ -65,14 +64,13 @@ namespace ProjeIsmi.Controllers
 
             if (ModelState.IsValid)
             {
-                // 1. KONTROL: Bu branşa bağlı antrenör var mı?
+                //Bu branşa bağlı antrenör var mı?
                 bool antrenorVarMi = await _context.Antrenorler.AnyAsync(a => a.UzmanlikId == id);
 
                 if (antrenorVarMi)
                 {
-                    // Hata Mesajı Ekle
                     ModelState.AddModelError("", "Bu branşa kayıtlı antrenörler olduğu için isim değişikliği yapılamaz. Önce antrenörlerin branşını değiştiriniz.");
-                    return View(uzmanlik); // Sayfayı hata ile geri döndür
+                    return View(uzmanlik); 
                 }
 
                 try
@@ -92,7 +90,6 @@ namespace ProjeIsmi.Controllers
 
         // --- SİLME (DELETE) ---
 
-        // 1. Silme Onay Sayfasını Getir (GET)
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -108,21 +105,19 @@ namespace ProjeIsmi.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // 1. KONTROL: Bu branşa bağlı antrenör var mı?
+            //  Bu branşa bağlı antrenör var mı?
             bool antrenorVarMi = await _context.Antrenorler.AnyAsync(a => a.UzmanlikId == id);
 
             if (antrenorVarMi)
             {
-                // Silinecek veriyi tekrar bul (View'a göndermek için)
                 var uzmanlik = await _context.Uzmanliklar.FindAsync(id);
 
-                // Hata mesajını ViewBag ile taşıyalım
                 ViewBag.HataMesaji = "Bu branşa kayıtlı antrenörler var! Silmek için önce antrenörleri silmeli veya başka branşa almalısınız.";
 
-                return View(uzmanlik); // Silme sayfasına geri dön (uyarı ile)
+                return View(uzmanlik);
             }
 
-            // Engel yoksa sil
+            
             var silinecekUzmanlik = await _context.Uzmanliklar.FindAsync(id);
             if (silinecekUzmanlik != null)
             {

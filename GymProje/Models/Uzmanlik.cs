@@ -8,9 +8,9 @@ namespace GymProje.Models
 
         [Required(ErrorMessage = "Uzmanlık adı zorunludur.")]
         [Display(Name = "Uzmanlık Adı")]
-        public string Ad { get; set; } = string.Empty; // Başlangıç değeri atandı
+        public string Ad { get; set; } = string.Empty; 
 
-        // İlişkili antrenörler listesi boş gelirse hata vermesin diye başlatıyoruz
+     
         public ICollection<Antrenor> Antrenorler { get; set; } = new List<Antrenor>();
 
 

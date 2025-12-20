@@ -89,14 +89,12 @@
     <script>
         $(document).ready(function () {
 
-            // Eğer sayfa açıldığında hoca zaten seçiliyse (Hata alıp geri dönüldüyse)
-            // Dersleri tekrar yüklemesi için tetikleyelim
             var baslangicAntrenor = $("#AntrenorId").val();
             if(baslangicAntrenor) {
                  DersleriGetir(baslangicAntrenor);
             }
 
-            // "Eğitmen" kutusu değiştiğinde çalışır
+           
             $("#AntrenorId").change(function () {
                 var secilenAntrenorId = $(this).val();
                 DersleriGetir(secilenAntrenorId);
@@ -105,22 +103,21 @@
             function DersleriGetir(antrenorId) {
                 var hizmetKutusu = $("#HizmetId");
 
-                // Ders kutusunu temizle ve "Yükleniyor..." yaz
+                
                 hizmetKutusu.empty();
                 hizmetKutusu.append('<option value="">-- Dersler Yükleniyor --</option>');
 
                 if (antrenorId) {
-                    // Controller'daki metoda git ve verileri al
+                    
                     $.ajax({
                         url: '/Randevu/GetHizmetlerByAntrenor',
                         type: 'GET',
                         data: { antrenorId: antrenorId },
                         success: function (data) {
-                            // "Yükleniyor" yazısını kaldır
                             hizmetKutusu.empty();
                             hizmetKutusu.append('<option value="">-- Ders Seçiniz --</option>');
 
-                            // Gelen dersleri kutuya ekle
+                            
                             $.each(data, function (index, item) {
                                 hizmetKutusu.append('<option value="' + item.id + '">' + item.metin + '</option>');
                             });
@@ -131,7 +128,7 @@
                         }
                     });
                 } else {
-                    // Eğer hoca seçimi kaldırılırsa dersleri de sıfırla
+                    
                     hizmetKutusu.empty();
                     hizmetKutusu.append('<option value="">-- Önce Eğitmen Seçin --</option>');
                 }

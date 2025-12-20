@@ -30,8 +30,6 @@ namespace GymProje.Controllers
             return View();
         }
 
-        // --- YENÝ EKLENEN METOD: HÝZMETLERÝ LÝSTELE ---
-        // Kullanýcý menüden "Hizmetler"e týkladýðýnda burasý çalýþacak
         public async Task<IActionResult> Hizmetler()
         {
             // Hizmetleri, baðlý olduðu branþ (Uzmanlik) bilgisiyle beraber getir
@@ -39,7 +37,6 @@ namespace GymProje.Controllers
             return View(hizmetler);
         }
 
-        // --- YENÝ: EÐÝTMENLER VÝTRÝNÝ ---
         public async Task<IActionResult> Egitmenler()
         {
             // Antrenörleri ve Uzmanlýk alanlarýný getir
